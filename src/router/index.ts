@@ -10,6 +10,7 @@ const router = createRouter({
     { path: '/item/:id', name: 'item-detail', component: () => import('@/pages/ItemDetail.vue') },
     { path: '/publish', name: 'publish', component: () => import('@/pages/Publish.vue') },
     { path: '/exchanges', name: 'exchanges', component: () => import('@/pages/Exchanges.vue') },
+    { path: '/meetups', name: 'meetups', component: () => import('@/pages/Meetups.vue') },
     { path: '/profile', name: 'profile', component: () => import('@/pages/Profile.vue') },
     { path: '/:pathMatch(.*)*', redirect: '/home' },
   ],

@@ -17,14 +17,34 @@ const seedExchanges: Exchange[] = [
     created_at: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
     updated_at: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
   },
+  {
+    // 已同意的交换，作为线下面交预约演示数据（meetupApi 的已锁定预约挂在它上面）。
+    id: 'exchange_seed_accepted',
+    from_user_id: 'user_me',
+    to_user_id: 'user_chen',
+    from_item_id: 'item_chair',
+    to_item_id: 'item_books',
+    status: ExchangeStatus.ACCEPTED,
+    message: '露营椅换设计书，已约线下当面交换。',
+    created_at: new Date(Date.now() - 1000 * 60 * 40).toISOString(),
+    updated_at: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
+  },
 ];
 
 export const exchangeApi = {
   async list(): Promise<Exchange[]> {
     const exchanges = await storage.get<Exchange[]>(STORAGE_KEYS.exchanges, []);
-    if (exchanges.length) return exchanges;
-    await storage.set(STORAGE_KEYS.exchanges, seedExchanges);
-    return seedExchanges;
+    // 幂等补齐种子：仅补缺失的 id，绝不覆盖用户已写入或已变更状态的交换。
+    const missing = seedExchanges.filter((seed) => !exchanges.some((item) => item.id === seed.id));
+    if (!missing.length) return exchanges;
+    const next = [...exchanges, ...missing];
+    await storage.set(STORAGE_KEYS.exchanges, next);
+    return next;
+  },
+
+  async detail(id: string): Promise<Exchange | undefined> {
+    const exchanges = await this.list();
+    return exchanges.find((item) => item.id === id);
   },
 
   async create(draft: ExchangeDraft): Promise<Exchange> {

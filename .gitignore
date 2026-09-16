@@ -6,3 +6,5 @@ dist/
 .idea/
 .vscode/
 coverage/
+scripts/.race-bundle.mjs
+scripts/crosstab/.worker-bundle.mjs

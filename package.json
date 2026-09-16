@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 18415",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 18415"
+    "preview": "vite preview --host 0.0.0.0 --port 18415",
+    "test:race": "node scripts/run-race.mjs",
+    "test:crosstab": "node scripts/crosstab/run-crosstab.mjs",
+    "test:crosstab:baseline": "node scripts/crosstab/run-crosstab.mjs --baseline",
+    "test:crosstab:lock-down": "node scripts/crosstab/run-crosstab.mjs --lock-unavailable"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.2.4",

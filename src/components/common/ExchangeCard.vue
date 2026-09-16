@@ -29,14 +29,22 @@
         <button v-if="exchange.status === ExchangeStatus.ACCEPTED" type="button" @click="$emit('complete', exchange.id)">
           完成
         </button>
+        <RouterLink v-if="exchange.status === ExchangeStatus.ACCEPTED" class="text-link" to="/meetups">
+          面交详情
+        </RouterLink>
       </div>
     </footer>
+
+    <!-- 交换通过（已同意）后，在交换记录上直接发起/管理线下面交 -->
+    <MeetupPanel v-if="exchange.status === ExchangeStatus.ACCEPTED" :exchange="exchange" />
   </article>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { RouterLink } from 'vue-router';
 
+import MeetupPanel from '@/components/common/MeetupPanel.vue';
 import { ExchangeStatus } from '@/constants/exchange';
 import type { Exchange } from '@/models/exchange';
 import type { Item } from '@/models/item';

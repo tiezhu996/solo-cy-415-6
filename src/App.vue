@@ -11,6 +11,7 @@
             <RouterLink to="/home">首页</RouterLink>
             <RouterLink to="/publish">发布</RouterLink>
             <RouterLink to="/exchanges">交换</RouterLink>
+            <RouterLink to="/meetups">面交</RouterLink>
             <RouterLink to="/profile">我的</RouterLink>
           </nav>
           <button class="theme-toggle" type="button" @click="themeStore.toggle">
@@ -34,17 +35,24 @@ import GlobalErrorBoundary from '@/components/common/GlobalErrorBoundary';
 import { useAuthStore } from '@/stores/authStore';
 import { useExchangeStore } from '@/stores/exchangeStore';
 import { useItemStore } from '@/stores/itemStore';
+import { useMeetupStore } from '@/stores/meetupStore';
 import { useThemeStore } from '@/stores/themeStore';
 import { toVantTheme } from '@/utils/themeUtils';
 
 const authStore = useAuthStore();
 const itemStore = useItemStore();
 const exchangeStore = useExchangeStore();
+const meetupStore = useMeetupStore();
 const themeStore = useThemeStore();
 const vantTheme = computed(() => toVantTheme(themeStore.theme));
 
 onMounted(async () => {
   themeStore.hydrate();
-  await Promise.all([authStore.hydrate(), itemStore.hydrate(), exchangeStore.hydrate()]);
+  await Promise.all([
+    authStore.hydrate(),
+    itemStore.hydrate(),
+    exchangeStore.hydrate(),
+    meetupStore.hydrate(),
+  ]);
 });
 </script>
